@@ -1,0 +1,9 @@
+Flask==2.0.1
+Flask-Bootstrap==3.3.7.1
+spacy==3.5.0
+PyPDF2==3.0.1
+pymongo==4.3.3
+python-dotenv==0.19.2
+
+# You'll also need to download the English language model for spaCy
+# Run: python -m spacy download en_core_web_sm 
