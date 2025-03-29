@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akash_NLP_Project</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='upadated_css/NLP_project.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        
+        #mcq-section {
+            width: 100%;
+            padding: 20px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 100vh; 
+        }
+
+        .container-mcq {
+            max-width: 1200px; 
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .container-mcq h1 {
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .container-mcq p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .container-mcq input[type="file"] {
+            padding: 10px;
+        }
+
+        .container-mcq select {
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .container-mcq button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .container-mcq button:hover {
+            background-color: #0056b3;
+        }
+
+        .container-mcq label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .container-mcq .form-group {
+            margin-bottom: 20px;
+        }
+        .generate{
+            color:black;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .options label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .options input[type="radio"] {
+            margin: 0;
+        }
+
+        /* New styles for categories */
+        .categories-section {
+            padding: 40px 0;
+            background-color: #f5f5f5;
+        }
+
+        .categories-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .category-card h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .category-card p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        /* Tabs for quiz types */
+        .quiz-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .quiz-tab {
+            padding: 10px 20px;
+            margin: 0 5px;
+            border: none;
+            background-color: #eee;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .quiz-tab.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* API quiz form */
+        .api-quiz-form {
+            display: none;
+        }
+
+        .api-quiz-form.active {
+            display: block;
+        }
+
+        /* Progress section styles */
+        .progress-section {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            text-align: left;
+        }
+
+        .progress-stats p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .progress-stats p:first-child {
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .progress-stats p:nth-child(2) {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .progress-stats p:last-child {
+            color: #ffc107;
+            font-weight: bold;
+        }
+
+        /* Quiz History Styles */
+        .quiz-history {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        .quiz-history h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .history-item {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .history-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .history-item p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .history-item p:first-child {
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .history-item p:nth-child(2) {
+            color: #28a745;
+        }
+
+        .history-item p:nth-child(3) {
+            color: #ffc107;
+            font-weight: bold;
+        }
+
+        .history-item p:last-child {
+            color: #6c757d;
+        }
+
+        /* Add styles for persistent progress section */
+        .persistent-progress-section {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        .persistent-progress-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .persistent-progress-section .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .persistent-progress-section .progress-stats p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .persistent-progress-section .progress-stats p:first-child {
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .persistent-progress-section .progress-stats p:nth-child(2) {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .persistent-progress-section .progress-stats p:last-child {
+            color: #ffc107;
+            font-weight: bold;
+        }
+
+        .persistent-progress-section .quiz-history {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        .persistent-progress-section .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .persistent-progress-section .history-item {
+            background-color: white;
+            padding: 10px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .persistent-progress-section .history-item p {
+            margin: 3px 0;
+            font-size: 0.9em;
+        }
+
+        .persistent-progress-section .history-item p:first-child {
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .persistent-progress-section .history-item p:nth-child(2) {
+            color: #28a745;
+        }
+
+        .persistent-progress-section .history-item p:nth-child(3) {
+            color: #ffc107;
+            font-weight: bold;
+        }
+
+        .persistent-progress-section .history-item p:last-child {
+            color: #6c757d;
+        }
+
+        .answers-review {
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .answers-review h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .question-review {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+
+        .question-review.correct {
+            border-left: 4px solid #28a745;
+        }
+
+        .question-review.incorrect {
+            border-left: 4px solid #dc3545;
+        }
+
+        .options-review {
+            margin: 10px 0;
+        }
+
+        .option {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .option.user-answer {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .option.correct-answer {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .answer-status {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .answer-status:contains('Correct!') {
+            color: #28a745;
+        }
+
+        .answer-status:contains('Incorrect') {
+            color: #dc3545;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <script>
+        // Check if user is logged in when page loads
+        window.onload = function() {
+            checkAuthStatus();
+        };
+
+        function checkAuthStatus() {
+            // Get auth status from localStorage
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const currentPage = window.location.pathname;
+
+            // If user is not logged in and trying to access main page
+            if (!isLoggedIn && currentPage.includes('updated.html')) {
+                // Redirect to login page
+                window.location.href = '/login';
+            }
+        }
+
+        function checkLoginAndRedirect() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (!isLoggedIn) {
+                alert("Please log in or sign up first");
+                window.location.href = '/login';
+            } else {
+                document.getElementById("mcq-section").scrollIntoView({ behavior: "smooth" });
+            }
+        }
+
+        // Update login status when user successfully logs in
+        function updateLoginStatus() {
+            localStorage.setItem('isLoggedIn', 'true');
+            window.location.href = '/updated.html';
+        }
+
+        // Handle logout
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = '/login';
+        }
+
+        async function openSearchResults() {
+            const subject = document.getElementById('subjectInput').value;
+            if (!subject) {
+                alert("Please enter a subject domain.");
+                return;
+            }
+            
+            // Show loading state
+            const searchButton = document.querySelector('.search');
+            const originalText = searchButton.textContent;
+            searchButton.textContent = 'Searching...';
+            searchButton.disabled = true;
+            
+            try {
+                // First try to get a session token
+                const tokenResponse = await fetch('https://opentdb.com/api_token.php?command=request');
+                const tokenData = await tokenResponse.json();
+                
+                if (tokenData.response_code !== 0) {
+                    throw new Error('Failed to get session token');
+                }
+                
+                // Get questions from Open Trivia DB
+                const apiUrl = `https://opentdb.com/api.php?amount=15&token=${tokenData.token}`;
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if (data.response_code === 0 && data.results.length > 0) {
+                    // Transform the Open Trivia DB format to our quiz format
+                    const transformedQuestions = data.results.map(q => ({
+                        question: q.question,
+                        options: [...q.incorrect_answers, q.correct_answer].sort(() => Math.random() - 0.5),
+                        correct_answer: q.correct_answer,
+                        category: q.category,
+                        difficulty: q.difficulty
+                    }));
+                    
+                    // Generate a unique quiz ID
+                    window.currentQuizId = 'trivia_' + Date.now();
+                    window.currentQuizType = 'trivia';
+                    
+                    // Create a new container for the quiz
+                    const quizContainer = document.createElement('div');
+                    quizContainer.className = 'quiz-container';
+                    quizContainer.style.marginTop = '20px';
+                    
+                    // Add quiz title
+                    const titleDiv = document.createElement('div');
+                    titleDiv.innerHTML = `<h2>Quiz on ${subject}</h2>`;
+                    quizContainer.appendChild(titleDiv);
+                    
+                    // Display the quiz
+                    displayQuiz(transformedQuestions, quizContainer);
+                    
+                    // Add the quiz container to the page
+                    const mcqSection = document.querySelector('.container-mcq');
+                    mcqSection.appendChild(quizContainer);
+                    
+                    // Scroll to the quiz
+                    quizContainer.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    alert('Failed to generate questions. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while generating questions. Please try again.');
+            } finally {
+                // Restore button state
+                searchButton.textContent = originalText;
+                searchButton.disabled = false;
+            }
+        }
+
+        async function submitQuizResponse(quizId, responses) {
+            try {
+                const response = await fetch('/api/submit-response', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        quiz_id: quizId,
+                        responses: responses,
+                        user_id: getUserId(), // You'll need to implement this based on your auth system
+                        timestamp: new Date().toISOString()
+                    })
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    alert('Quiz responses submitted successfully!');
+                } else {
+                    alert('Failed to submit quiz responses.');
+                }
+            } catch (error) {
+                console.error('Error submitting quiz:', error);
+                alert('An error occurred while submitting the quiz.');
+            }
+        }
+
+        async function handleMCQGeneration() {
+            window.currentQuizType = 'file';
+            const files = document.getElementById('file-upload').files;
+            const numQuestions = document.getElementById('num-questions').value;
+
+            if (files.length === 0) {
+                alert("Please upload a file.");
+                return;
+            }
+
+            // Check file types
+            for (let file of files) {
+                if (!file.name.match(/\.(pdf|txt)$/i)) {
+                    alert("Please upload only PDF or TXT files.");
+                    return;
+                }
+            }
+
+            const formData = new FormData();
+            for (let file of files) {
+                formData.append('files[]', file);
+            }
+            formData.append('num_questions', numQuestions);
+
+            // Show loading state
+            const generateButton = document.getElementById('generate-btn');
+            const originalText = generateButton.textContent;
+            generateButton.textContent = 'Generating...';
+            generateButton.disabled = true;
+
+            try {
+                const response = await fetch('/', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.error || `HTTP error! status: ${response.status}`);
+                }
+
+                if (!result.success) {
+                    throw new Error(result.error || 'Failed to generate questions');
+                }
+
+                if (!result.mcqs || result.mcqs.length === 0) {
+                    throw new Error('No questions were generated from the uploaded file');
+                }
+
+                window.currentQuizId = result.quiz_id;
+                displayQuiz(result.mcqs);
+            } catch (error) {
+                console.error('Error generating MCQs:', error);
+                alert(error.message || 'An error occurred while generating MCQs. Please try again.');
+            } finally {
+                // Restore button state
+                generateButton.textContent = originalText;
+                generateButton.disabled = false;
+            }
+        }
+
+        async function handleAPIQuizGeneration() {
+            window.currentQuizType = 'api';
+            const topic = document.getElementById('api-topic').value;
+            const difficulty = document.getElementById('api-difficulty').value;
+            const numQuestions = document.getElementById('api-num-questions').value;
+
+            if (!topic) {
+                alert("Please enter a topic.");
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/generate-quiz', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        topic: topic,
+                        difficulty: difficulty,
+                        num_questions: numQuestions
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                if (result.success) {
+                    window.currentQuizId = result.quiz_id;
+                    displayQuiz(result.questions);
+                } else {
+                    alert(result.error || 'Failed to generate quiz');
+                }
+            } catch (error) {
+                console.error('Error generating API quiz:', error);
+                alert('An error occurred while generating the quiz. Please try again.');
+            }
+        }
+
+        function displayQuiz(mcqs, container = null) {
+            if (!mcqs || mcqs.length === 0) {
+                alert('No questions were generated. Please try again.');
+                return;
+            }
+
+            console.log(`Displaying ${mcqs.length} questions`);
+            
+            const quizContainer = container || document.createElement('div');
+            quizContainer.className = 'quiz-container';
+            
+            // Clear existing content if no container was provided
+            if (!container) {
+                quizContainer.innerHTML = '';
+            }
+            
+            mcqs.forEach((mcq, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                
+                // Handle both file-generated and API-generated question formats
+                const questionText = mcq.question || mcq[0];
+                const options = mcq.options || mcq[1];
+                const correctAnswer = mcq.correct_answer || mcq[2];
+                
+                if (!questionText || !options || !correctAnswer) {
+                    console.error('Invalid question format:', mcq);
+                    return;
+                }
+                
+                questionDiv.innerHTML = `
+                    <p><strong>Question ${index + 1}:</strong> ${questionText}</p>
+                    <div class="options">
+                        ${options.map((option, i) => `
+                            <label>
+                                <input type="radio" name="q${index}" value="${String.fromCharCode(65 + i)}">
+                                ${String.fromCharCode(65 + i)}. ${option}
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+                quizContainer.appendChild(questionDiv);
+            });
+
+            const submitButton = document.createElement('button');
+            submitButton.textContent = 'Submit Quiz';
+            submitButton.onclick = async () => {
+                const responses = [];
+                mcqs.forEach((_, index) => {
+                    const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                    responses.push(selected ? selected.value : null);
+                });
+
+                // Check if all questions are answered
+                if (responses.some(r => r === null)) {
+                    alert('Please answer all questions before submitting.');
+                    return;
+                }
+
+                try {
+                    // Show loading state
+                    submitButton.textContent = 'Submitting...';
+                    submitButton.disabled = true;
+
+                    // Create a temporary quiz ID if none exists
+                    const quizId = window.currentQuizId || 'temp_' + Date.now();
+                    
+                    const response = await fetch('/api/submit-response', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            quiz_id: quizId,
+                            responses: responses,
+                            questions: mcqs,
+                            timestamp: new Date().toISOString()
+                        })
+                    });
+
+                    const result = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(result.error || `HTTP error! status: ${response.status}`);
+                    }
+
+                    if (!result.success) {
+                        throw new Error(result.error || 'Failed to submit quiz');
+                    }
+
+                    // Save progress with more detailed information
+                    const percentage = Math.round((result.score / result.total) * 100);
+                    let progress = JSON.parse(localStorage.getItem('quizProgress'));
+                    
+                    // Initialize progress object if it doesn't exist
+                    if (!progress) {
+                        progress = {
+                            totalQuizzes: 0,
+                            scores: [],
+                            history: []
+                        };
+                    }
+                    
+                    // Ensure history array exists
+                    if (!progress.history) {
+                        progress.history = [];
+                    }
+                    
+                    progress.totalQuizzes += 1;
+                    progress.scores.push(percentage);
+
+                    // Add to history with detailed information
+                    const quizHistory = {
+                        date: new Date().toISOString(),
+                        score: percentage,
+                        totalQuestions: result.total,
+                        correctAnswers: result.score,
+                        quizType: window.currentQuizType || 'file', // 'file' or 'api'
+                        topic: document.getElementById('api-topic')?.value || 'File Upload',
+                        difficulty: document.getElementById('api-difficulty')?.value || 'N/A'
+                    };
+                    progress.history.push(quizHistory);
+                    localStorage.setItem('quizProgress', JSON.stringify(progress));
+
+                    // After successful submission and saving progress
+                    updatePersistentProgress();
+
+                    // Create results display with history
+                    const resultsDiv = document.createElement('div');
+                    resultsDiv.className = 'quiz-results';
+                    resultsDiv.innerHTML = `
+                        <h2>Quiz Results</h2>
+                        <p>Your score: ${result.score}/${result.total}</p>
+                        <p>Percentage: ${percentage}%</p>
+                        <div class="answers-review">
+                            <h3>Question Review</h3>
+                            ${mcqs.map((mcq, index) => {
+                                const questionText = mcq.question || mcq[0];
+                                const options = mcq.options || mcq[1];
+                                const correctAnswer = mcq.correct_answer || mcq[2];
+                                const userAnswer = responses[index];
+                                const isCorrect = userAnswer === correctAnswer;
+                                
+                                return `
+                                    <div class="question-review ${isCorrect ? 'correct' : 'incorrect'}">
+                                        <p><strong>Question ${index + 1}:</strong> ${questionText}</p>
+                                        <div class="options-review">
+                                            ${options.map((option, i) => {
+                                                const optionLetter = String.fromCharCode(65 + i);
+                                                const isUserAnswer = optionLetter === userAnswer;
+                                                const isCorrectAnswer = optionLetter === correctAnswer;
+                                                return `
+                                                    <div class="option ${isUserAnswer ? 'user-answer' : ''} ${isCorrectAnswer ? 'correct-answer' : ''}">
+                                                        ${optionLetter}. ${option}
+                                                    </div>
+                                                `;
+                                            }).join('')}
+                                        </div>
+                                        <p class="answer-status">${isCorrect ? 'Correct!' : 'Incorrect'}</p>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                        <button onclick="location.reload()">Take Another Quiz</button>
+                    `;
+                    
+                    // Replace quiz with results
+                    const progressSection = document.querySelector('.persistent-progress-section');
+                    
+                    // Store the progress section if it exists
+                    if (progressSection) {
+                        progressSection.remove();
+                    }
+                    
+                    // Clear the container and add the results
+                    quizContainer.innerHTML = '';
+                    quizContainer.appendChild(resultsDiv);
+                    
+                    // Add back the progress section if it existed
+                    if (progressSection) {
+                        quizContainer.appendChild(progressSection);
+                    }
+                } catch (error) {
+                    console.error('Error submitting quiz:', error);
+                    alert(error.message || 'An error occurred while submitting the quiz. Please try again.');
+                } finally {
+                    // Restore button state
+                    submitButton.textContent = 'Submit Quiz';
+                    submitButton.disabled = false;
+                }
+            };
+            quizContainer.appendChild(submitButton);
+
+            // Replace the form with the quiz
+            const mcqSection = document.querySelector('.container-mcq');
+            const progressSection = document.querySelector('.persistent-progress-section');
+            
+            // Store the progress section if it exists
+            if (progressSection) {
+                progressSection.remove();
+            }
+            
+            // Clear the container and add the quiz
+            mcqSection.innerHTML = '';
+            mcqSection.appendChild(quizContainer);
+            
+            // Add back the progress section if it existed
+            if (progressSection) {
+                mcqSection.appendChild(progressSection);
+            }
+        }
+
+        function switchQuizType(type) {
+            document.querySelectorAll('.quiz-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-type="${type}"]`).classList.add('active');
+
+            if (type === 'file') {
+                document.getElementById('file-quiz-form').style.display = 'block';
+                document.getElementById('api-quiz-form').style.display = 'none';
+            } else {
+                document.getElementById('file-quiz-form').style.display = 'none';
+                document.getElementById('api-quiz-form').style.display = 'block';
+            }
+        }
+
+        function selectCategory(category) {
+            document.getElementById('api-topic').value = category;
+            document.getElementById('mcq-section').scrollIntoView({ behavior: 'smooth' });
+            switchQuizType('api');
+        }
+
+        function getTotalQuizzes() {
+            const progress = JSON.parse(localStorage.getItem('quizProgress') || '{"totalQuizzes": 0, "scores": [], "history": []}');
+            return progress.totalQuizzes || 0;
+        }
+
+        function getAverageScore() {
+            const progress = JSON.parse(localStorage.getItem('quizProgress') || '{"totalQuizzes": 0, "scores": [], "history": []}');
+            if (!progress.scores || progress.scores.length === 0) return 0;
+            const sum = progress.scores.reduce((a, b) => a + b, 0);
+            return Math.round(sum / progress.scores.length);
+        }
+
+        function getBestScore() {
+            const progress = JSON.parse(localStorage.getItem('quizProgress') || '{"totalQuizzes": 0, "scores": [], "history": []}');
+            if (!progress.scores || progress.scores.length === 0) return 0;
+            return Math.max(...progress.scores);
+        }
+
+        function getQuizHistory() {
+            const progress = JSON.parse(localStorage.getItem('quizProgress') || '{"totalQuizzes": 0, "scores": [], "history": []}');
+            return progress.history || [];
+        }
+
+        // Add function to update persistent progress section
+        function updatePersistentProgress() {
+            const progress = JSON.parse(localStorage.getItem('quizProgress') || '{"totalQuizzes": 0, "scores": [], "history": []}');
+            
+            // Update stats
+            document.getElementById('total-quizzes').textContent = progress.totalQuizzes || 0;
+            document.getElementById('average-score').textContent = getAverageScore();
+            document.getElementById('best-score').textContent = getBestScore();
+            
+            // Update recent quizzes
+            const recentQuizzesDiv = document.getElementById('recent-quizzes');
+            if (progress.history && progress.history.length > 0) {
+                recentQuizzesDiv.innerHTML = progress.history.slice(-5).reverse().map(quiz => `
+                    <div class="history-item">
+                        <p>Date: ${new Date(quiz.date).toLocaleDateString()}</p>
+                        <p>Topic: ${quiz.topic}</p>
+                        <p>Score: ${quiz.score}%</p>
+                        <p>Questions: ${quiz.correctAnswers}/${quiz.totalQuestions}</p>
+                    </div>
+                `).join('');
+            } else {
+                recentQuizzesDiv.innerHTML = '<p>No quizzes taken yet</p>';
+            }
+        }
+
+        // Update progress when page loads
+        window.addEventListener('load', function() {
+            updatePersistentProgress();
+        });
+    </script>
+
+    
+    <nav>
+        <div class="container">
+            <div class="first">
+                <img src="{{ url_for('static', filename='images/logo for nlp website.jpg') }}" alt="akash" class="image">
+            </div>
+            <div class="second">
+                <button class="green" onclick="logout()">Logout</button>
+                <i class="fa-solid fa-eye fa-3x mode eye"></i>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" id="subjectInput" placeholder="Search subject" size="15px">
+                <button onclick="openSearchResults()" class="search">Search</button>
+            </div>
+        </div>
+    </nav>
+
+    
+    <section class="sec">
+        <div class="left">
+            <span>
+                <h1>Generate MCQs From Any text</h1>
+            </span>
+            <span>
+                <p>Provide a body of text and get AI-Generated Multiple Choice Questions along with the answers</p>
+            </span>
+            <span>
+                <button class="start" onclick="checkLoginAndRedirect()">Start for free</button>
+            </span>
+        </div>
+        <div class="right">
+            <img src="{{ url_for('static', filename='images/robot.png') }}" alt="akash" class="image2">
+        </div>
+    </section>
+
+    <!-- New Categories Section -->
+    <section class="categories-section">
+        <div class="categories-container">
+            <div class="category-card" onclick="selectCategory('Programming')">
+                <h3>Programming</h3>
+                <p>Test your coding knowledge with questions on various programming languages and concepts.</p>
+            </div>
+            <div class="category-card" onclick="selectCategory('Mathematics')">
+                <h3>Mathematics</h3>
+                <p>Challenge yourself with mathematical problems and concepts.</p>
+            </div>
+            <div class="category-card" onclick="selectCategory('Science')">
+                <h3>Science</h3>
+                <p>Explore questions about physics, chemistry, biology, and more.</p>
+            </div>
+            <div class="category-card" onclick="selectCategory('History')">
+                <h3>History</h3>
+                <p>Test your knowledge of historical events and figures.</p>
+            </div>
+            <div class="category-card" onclick="selectCategory('Geography')">
+                <h3>Geography</h3>
+                <p>Learn about countries, cultures, and geographical features.</p>
+            </div>
+            <div class="category-card" onclick="selectCategory('Literature')">
+                <h3>Literature</h3>
+                <p>Questions about books, authors, and literary concepts.</p>
+            </div>
+            <div class="category-card" onclick="selectCategory('Technology')">
+                <h3>Technology</h3>
+                <p>Stay updated with questions about modern technology and innovations.</p>
+            </div>
+            <div class="category-card" onclick="selectCategory('General Knowledge')">
+                <h3>General Knowledge</h3>
+                <p>Test your knowledge across various topics and current affairs.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="mcq-section">
+        <div class="container-mcq">
+            <h1 class="generate">Generate MCQs</h1>
+            <p>Choose your preferred method to generate multiple-choice questions.</p>
+
+            <div class="quiz-tabs">
+                <button class="quiz-tab active" data-type="file" onclick="switchQuizType('file')">Upload File</button>
+                <button class="quiz-tab" data-type="api" onclick="switchQuizType('api')">Choose Topic</button>
+            </div>
+
+            <div id="file-quiz-form">
+                <div class="form-group">
+                    <label for="file-upload">Upload File(s) (PDF or TXT)</label>
+                    <input type="file" id="file-upload" multiple>
+                </div>
+
+                <div class="form-group">
+                    <label for="num-questions">Number of Questions:</label>
+                    <select id="num-questions">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+
+                <button id="generate-btn" onclick="handleMCQGeneration()">Generate MCQs</button>
+            </div>
+
+            <div id="api-quiz-form" style="display: none;">
+                <div class="form-group">
+                    <label for="api-topic">Topic:</label>
+                    <input type="text" id="api-topic" placeholder="Enter topic">
+                </div>
+
+                <div class="form-group">
+                    <label for="api-difficulty">Difficulty Level:</label>
+                    <select id="api-difficulty">
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="api-num-questions">Number of Questions:</label>
+                    <select id="api-num-questions">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+
+                <button onclick="handleAPIQuizGeneration()">Generate MCQs</button>
+            </div>
+
+            <!-- Moved progress section here -->
+            <div class="persistent-progress-section">
+                <h3>Your Progress</h3>
+                <div class="progress-stats">
+                    <p>Total Quizzes Taken: <span id="total-quizzes">0</span></p>
+                    <p>Average Score: <span id="average-score">0</span>%</p>
+                    <p>Best Score: <span id="best-score">0</span>%</p>
+                </div>
+                <div class="quiz-history">
+                    <h3>Recent Quizzes</h3>
+                    <div class="history-list" id="recent-quizzes">
+                        <!-- Recent quizzes will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <footer>
+        <div class="line"></div>
+        <div class="last"> 
+            <div class="text">
+                <h2>Reach us</h2>
+            </div>
+            <div class="about">
+                <ul>
+                    <li><a href="singhakash30003@gmail.com"><img src="{{ url_for('static', filename='images/mail.jpeg') }}" alt="" class="icons"></a></li>
+                    <li><a href="www.linkedin.com/in/akash-kumar-singh-02248830b"><img src="{{ url_for('static', filename='images/linkedin.png') }}" alt="" class="icons"></a></li>
+                    <li><a href="#"><img src="{{ url_for('static', filename='images/insta.png') }}" alt="" class="icons"></a></li>
+                    <li><a href="#"><img src="{{ url_for('static', filename='images/mail.jpeg') }}" alt="" class="icons"></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='NLP_project.js') }}"></script>
+</body>
+
+</html>
