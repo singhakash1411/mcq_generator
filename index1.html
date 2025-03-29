@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akash NLP Project - Generate MCQs</title>
+    <link rel="stylesheet" href="../static/css/NLP_project.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        
+       
+    </style>
+</head>
+
+<body>
+    <!-- Simulating user login state -->
+    <script>
+        var isLoggedIn = false; // Simulate login state (Set to true if user is logged in)
+
+        function checkLoginAndRedirect() {
+            if (!isLoggedIn) {
+                alert("Please log in or sign up first");
+            } else {
+                // If user is logged in, show the form for generating MCQs
+                document.getElementById('mcqForm').scrollIntoView();
+            }
+        }
+
+        function openSearchResults() {
+            const subject = document.getElementById('subjectInput').value;
+            if (!subject) {
+                alert("Please enter a subject domain.");
+                return;
+            }
+            // Open a new tab with search results
+            const searchUrl = `search_result.html?subject=${subject}`;
+            window.open(searchUrl, '_blank');
+        }
+    </script>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="containery">
+            <div class="first">
+                <img src="../static/images/logo for nlp website.jpg" alt="Akash" class="image">
+            </div>
+            <div class="second">
+                <a href="../templates/ds.html" target="_blank"><button class="white">Sign Up</button></a>
+                <a href="../templates/login.html" target="_main"><button class="green">Login</button></a>
+                <i class="fa-solid fa-eye fa-3x mode eye"></i>
+            </div>
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <input type="text" id="subjectInput" placeholder="Search subject" size="15px">
+                <button onclick="openSearchResults()" class="search">Search</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Section -->
+    <section class="sec">
+        <div class="left">
+            <span>
+                <h1>Generate MCQs From Any Text</h1>
+            </span>
+            <span>
+                <p>Provide a body of text and get AI-Generated Multiple Choice Questions along with the answers</p>
+            </span>
+            <span>
+                <button class="start" onclick="checkLoginAndRedirect()">Start for free</button>
+            </span>
+        </div>
+        <div class="right">
+            <img src="../static/images/robot.png" alt="Akash" class="image2">
+        </div>
+    </section>
+    <section class="formsection">
+    <!-- MCQ Generation Form -->
+    <div class="mcq-container" id="mcqForm">
+        <h1 class="form-header">Generate MCQs</h1>
+        <p class="form-description">This application generates multiple-choice questions (MCQs) based on the provided text. You can either upload a PDF or TXT file containing the text.</p>
+        
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file">Upload File(s) (PDF or TXT)</label>
+                <input type="file" id="file" name="files[]" multiple class="file-input">
+            </div>
+            <div class="form-group">
+                <label for="num_questions">Number of Questions:</label>
+                <select id="num_questions" name="num_questions" class="select-input">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-button">Generate MCQs</button>
+        </form>
+    </div>
+</section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="line"></div>
+        <div class="last">
+            <div class="text">
+                <h2>Reach us</h2>
+            </div>
+            <div class="about">
+                <ul>
+                    <li><a href="#"><img src="../static/images/mail.jpeg" alt="" class="icons"></a></li>
+                    <li><a href="#"><img src="../static/images/linkedin.png" alt="" class="icons"></a></li>
+                    <li><a href="#"><img src="../static/images/linkedin.png" alt="" class="icons"></a></li>
+                    <li><a href="#"><img src="th.jpeg" alt="" class="icons"></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Include external JavaScript -->
+    <script src="../static/NLP_project.js"></script>
+
+</body>
+
+</html>
