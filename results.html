@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  <!-- Include Chart.js -->
+    <style>
+        /* Style to center the chart and control its size */
+        #resultsChart {
+            max-width: 300px; /* Increased size for better visibility */
+            max-height: 300px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quiz Results</h1>
+    <table border="1">
+        <tr>
+            <th>Question</th>
+            <th>Your Answer</th>
+            <th>Correct Answer</th>
+            <th>Result</th>
+        </tr>
+        <!-- Flask loop to render results -->
+        {% for question_stem, answer_choices, correct_answer, user_answer, is_correct in results %}
+        <tr>
+            <td>{{ question_stem }}</td>
+            <td>{{ user_answer }}</td>
+            <td>{{ correct_answer }}</td>
+            <td>{{ 'Correct' if is_correct else 'Incorrect' }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Pie Chart to show correct/incorrect answers -->
+    <canvas id="resultsChart"></canvas> <!-- Dynamic chart container -->
+    <script>
+        // Get the chart context
+        var ctx = document.getElementById('resultsChart').getContext('2d');
+
+        // Create a new Chart.js pie chart
+        var myChart = new Chart(ctx, {
+            type: 'pie',  // Pie chart to display results
+            data: {
+                labels: {{ chart_data.labels|tojson }},  // Flask converts Python data to JSON
+                datasets: [{
+                    label: 'Results',
+                    data: {{ chart_data.data|tojson }},  // Python data passed as JSON
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.5)',  // Color for Correct
+                        'rgba(255, 99, 132, 0.5)'   // Color for Incorrect
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,  // Ensure chart responsiveness
+                plugins: {
+                    legend: {
+                        position: 'top',  // Move legend to the top
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw; // Display label and value in tooltips
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

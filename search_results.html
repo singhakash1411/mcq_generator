@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Search Results</title>
+    <link rel="stylesheet" href="search_results.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        body.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+        .container.dark-mode {
+            background-color: #1e1e1e;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MCQs for <span id="subjectTitle"></span></h1>
+        <div id="mcqContainer"></div>
+        <button id="submitBtn" onclick="checkAnswers()">Submit</button>
+    </div>
+
+    <script>
+        // Enable dark mode if previously set in localStorage
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('.container').classList.add('dark-mode');
+        }
+
+        // Parse the subject from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const subject = urlParams.get('subject');
+        document.getElementById('subjectTitle').innerText = subject;
+
+        // Category mappings for Open Trivia DB API
+        const categoryMap = {
+            "science": 17,
+            "history": 23,
+            "geography": 22,
+            "computers": 18,
+            "sports": 21,
+            "math": 19,
+            "movies": 11,
+            "books": 10,
+            "music": 12,
+            "general knowledge": 9,
+            "art": 25,
+            "animals": 27,
+            "vehicles": 28,
+            "comics": 29,
+            "gadgets": 30,
+            "politics": 24,
+            "anime": 31,
+            "cartoons": 32,
+            "celebrities": 26,
+            "board games": 16,
+            "video games": 15,
+            "mythology": 20,
+            "nature": 17,
+            "television": 14
+        };
+
+        const category = categoryMap[subject.toLowerCase()];
+        if (!category) {
+            alert("Invalid subject.");
+        } else {
+            const apiUrl = `https://opentdb.com/api.php?amount=15&category=${category}&type=multiple`;
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const mcqs = data.results;
+                    const mcqContainer = document.getElementById('mcqContainer');
+
+                    mcqs.forEach((mcq, index) => {
+                        let allOptions = [...mcq.incorrect_answers, mcq.correct_answer];
+                        allOptions = allOptions.sort(() => Math.random() - 0.5);
+
+                        const questionBlock = document.createElement('div');
+                        questionBlock.innerHTML = `
+                            <h3>Question ${index + 1}: ${mcq.question}</h3>
+                            <ul id="question${index}">
+                                ${allOptions.map(option => `<li><input type="radio" name="q${index}" value="${option}"> ${option}</li>`).join('')}
+                            </ul>
+                            <p id="answer${index}" style="display:none; color:green;">Correct Answer: ${mcq.correct_answer}</p>
+                        `;
+                        mcqContainer.appendChild(questionBlock);
+                    });
+
+                    window.correctAnswers = mcqs.map(mcq => mcq.correct_answer);
+                });
+        }
+
+        function checkAnswers() {
+            const selectedAnswers = Array.from(document.querySelectorAll('input[type="radio"]:checked')).map(input => input.value);
+
+            if (selectedAnswers.length !== window.correctAnswers.length) {
+                alert("Please answer all questions.");
+                return;
+            }
+
+            let score = 0;
+
+            window.correctAnswers.forEach((correctAnswer, index) => {
+                const selectedAnswer = selectedAnswers[index];
+                const answerParagraph = document.getElementById(`answer${index}`);
+                const options = document.querySelectorAll(`#question${index} li`);
+
+                options.forEach(option => {
+                    const input = option.querySelector('input');
+                    const label = option.innerText;
+
+                    if (label === correctAnswer) {
+                        option.style.color = "green";
+                    }
+
+                    if (input.checked && label !== correctAnswer) {
+                        option.style.color = "red";
+                    }
+                });
+
+                answerParagraph.style.display = 'block';
+
+                if (selectedAnswer === correctAnswer) {
+                    score++;
+                }
+            });
+
+            alert(`You got ${score} out of ${window.correctAnswers.length} correct!`);
+        }
+    </script>
+</body>
+</html>
