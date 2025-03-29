@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akash_NLP_Project</title>
+    <link rel="stylesheet" href="NLP_project.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Simulating user login state -->
+    <script>
+        var isLoggedIn = false; // Simulate login state (Set to true if user is logged in)
+
+        function checkLoginAndRedirect() {
+            if (!isLoggedIn) {
+                alert("Please log in or sign up first");
+            } else {
+                // Redirect to the MCQ generation page if logged in
+                window.location.href = "generate_mcqs.html"; // Path to the MCQ generation page
+            }
+        }
+
+        function openSearchResults() {
+            const subject = document.getElementById('subjectInput').value;
+            if (!subject) {
+                alert("Please enter a subject domain.");
+                return;
+            }
+            // Open a new tab with search results
+            const searchUrl = `search_results.html?subject=${subject}`;
+            window.open(searchUrl, '_blank');
+        }
+    </script>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="first">
+                <img src="logo for nlp website.jpg" alt="akash" class="image">
+            </div>
+            <div class="second">
+                <a href="ds.html" target="_blank"><button class="white">Sign Up</button></a>
+                <a href="login.html" target="_main"><button class="green">Login</button></a>
+                <i class="fa-solid fa-eye fa-3x mode eye"></i>
+            </div>
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <input type="text" id="subjectInput" placeholder="Search subject" size="15px">
+                <button onclick="openSearchResults()" class="search">Search</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Section -->
+    <section class="sec">
+        <div class="left">
+            <span>
+                <h1>Generate MCQs From Any text</h1>
+            </span>
+            <span>
+                <p>Provide a body of text and get AI-Generated Multiple Choice Questions along with the answers</p>
+            </span>
+            <span>
+                <button class="start" onclick="checkLoginAndRedirect()">Start for free</button>
+            </span>
+        </div>
+        <div class="right">
+            <img src="robot.png" alt="akash" class="image2">
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="line"></div>
+        <div class="last">
+            <div class="text">
+                <h2>Reach us</h2>
+            </div>
+            <div class="about">
+                <ul>
+                    <li><a href="#"><img src="mail.jpeg" alt="" class="icons"></a></li>
+                    <li><a href="#"><img src="linkedin.png" alt="" class="icons"></a></li>
+                    <li><a href="#"><img src="insta.png" alt="" class="icons"></a></li>
+                    <li><a href="#"><img src="th.jpeg" alt="" class="icons"></a></li>
+                </ul>
+            </div>
+            
+        </div>
+    </footer>
+    <script src="NLP_project.js"></script>
+
+</body>
+
+</html>
